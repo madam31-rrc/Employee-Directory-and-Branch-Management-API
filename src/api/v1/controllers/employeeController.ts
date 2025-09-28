@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as employeeService from "../services/employeeService";
-import { Employee } from "../data/employeeData"
-import employees from "../data/employeeData"
+import { Employee } from "../../../data/employeeData"
 
 export const createEmployee = async (
     req: Request,
