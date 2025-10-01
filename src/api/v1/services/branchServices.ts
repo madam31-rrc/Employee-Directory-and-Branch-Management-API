@@ -1,12 +1,49 @@
-import branches, { Branch } from "../data/branchData"
-import branchs from "../../../data/branchData"
+import { Branch, initialBranches } from "../../../data/branchData";
 
-export const createBranch = async (branch: {
-    name: string,
-    address: string,
-    phone: string,
-}): Promise<Branch> => {
-    const newBranch: Branch = { id: Date.now().toString(), ...branch };
-    branches.push(newBranch);
-    return newBranch;
-};
+let branches: Branch[] = [];
+export function resetBranches(): void {
+  branches = initialBranches.map(b => ({ ...b }));
+}
+
+
+resetBranches();
+export function getAllBranches(): Branch[] {
+  return branches;
+}
+
+export function getBranchById(id: string): Branch | undefined {
+  return branches.find(b => b.id === id);
+}
+
+function nextBranchId(): string {
+  if (branches.length === 0) return "1";
+
+  const numericIds = branches
+    .map(b => Number(b.id))
+    .filter(n => Number.isFinite(n));
+
+  const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+  return String(maxId + 1);
+}
+
+export function createBranch(payload: Omit<Branch, "id">): Branch {
+  const newBranch: Branch = {
+    id: nextBranchId(),
+    ...payload
+  };
+  branches.push(newBranch);
+  return newBranch;
+}
+
+export function updateBranch(id: string, partial: Partial<Branch>): Branch | undefined {
+  const idx = branches.findIndex(b => b.id === id);
+  if (idx === -1) return undefined;
+  branches[idx] = { ...branches[idx], ...partial, id };
+  return branches[idx];
+}
+
+export function deleteBranch(id: string): boolean {
+  const before = branches.length;
+  branches = branches.filter(b => b.id !== id);
+  return branches.length < before;
+}
