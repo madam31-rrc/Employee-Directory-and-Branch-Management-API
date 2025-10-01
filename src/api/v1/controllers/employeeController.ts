@@ -1,11 +1,15 @@
+// src/api/v1/controllers/employeeController.ts
 import { Request, Response } from "express";
 import * as svc from "../services/employeeService";
 
+
 export function create(req: Request, res: Response) {
   const { name, position, department, email, phone, branchId } = req.body;
+
   if (!name || !position || !department || !email || !phone || !branchId) {
-    return res.status(400).json({ error: "Missing required fields" });
+    return res.status(400).json({ error: "Missing required fields (name, position, department, email, phone, branchId)" });
   }
+
   const employee = svc.createEmployee({ name, position, department, email, phone, branchId });
   return res.status(201).json(employee);
 }
@@ -28,6 +32,7 @@ export function update(req: Request, res: Response) {
   return res.json(updated);
 }
 
+
 export function remove(req: Request, res: Response) {
   const { id } = req.params;
   const ok = svc.deleteEmployee(id);
@@ -37,14 +42,14 @@ export function remove(req: Request, res: Response) {
 
 export function byBranch(req: Request, res: Response) {
   const { branchId } = req.params;
-  if (!branchId) return res.status(400).json({ error: "Missing branchId" });
+  if (!branchId) return res.status(400).json({ error: "Missing branchId parameter" });
   const list = svc.getEmployeesByBranch(branchId);
   return res.json(list);
 }
 
 export function byDepartment(req: Request, res: Response) {
   const { department } = req.params;
-  if (!department) return res.status(400).json({ error: "Missing department" });
+  if (!department) return res.status(400).json({ error: "Missing department parameter" });
   const list = svc.getEmployeesByDepartment(department);
   return res.json(list);
 }
