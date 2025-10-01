@@ -1,45 +1,52 @@
-import { Employee, initialEmployees } from "../../data/employeeData";
-import { v4 as uuidv4 } from "uuid";
+import { Branch, initialBranches } from "../../../data/branchData";
 
-let employees: Employee[] = [];
-
-export function resetEmployees() {
-  employees = initialEmployees.map(e => ({ ...e }));
+let branches: Branch[] = [];
+export function resetBranches(): void {
+  branches = initialBranches.map(b => ({ ...b }));
 }
 
-resetEmployees();
+resetBranches();
 
-export function getAllEmployees(): Employee[] {
-  return employees;
+export function getAllBranches(): Branch[] {
+  return branches;
+}
+export function getBranchById(id: string): Branch | undefined {
+  return branches.find(b => b.id === id);
 }
 
-export function getEmployeeById(id: string): Employee | undefined {
-  return employees.find(e => e.id === id);
+function nextBranchId(): string {
+  if (branches.length === 0) return "1";
+
+  const numericIds = branches
+    .map(b => Number(b.id))
+    .filter(n => Number.isFinite(n));
+
+  const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+  return String(maxId + 1);
 }
 
-export function createEmployee(payload: Omit<Employee, "id">): Employee {
-  const newEmployee: Employee = { id: uuidv4(), ...payload };
-  employees.push(newEmployee);
-  return newEmployee;
+export function createBranch(payload: Omit<Branch, "id">): Branch {
+  const newBranch: Branch = {
+    id: nextBranchId(),
+    ...payload
+  };
+  branches.push(newBranch);
+  return newBranch;
 }
 
-export function updateEmployee(id: string, partial: Partial<Employee>): Employee | undefined {
-  const idx = employees.findIndex(e => e.id === id);
+export function updateBranch(
+  id: string,
+  partial: Partial<Branch>
+): Branch | undefined {
+  const idx = branches.findIndex(b => b.id === id);
   if (idx === -1) return undefined;
-  employees[idx] = { ...employees[idx], ...partial, id };
-  return employees[idx];
+
+  branches[idx] = { ...branches[idx], ...partial, id };
+  return branches[idx];
 }
 
-export function deleteEmployee(id: string): boolean {
-  const before = employees.length;
-  employees = employees.filter(e => e.id !== id);
-  return employees.length < before;
-}
-
-export function getEmployeesByBranch(branchId: string): Employee[] {
-  return employees.filter(e => e.branchId === branchId);
-}
-
-export function getEmployeesByDepartment(department: string): Employee[] {
-  return employees.filter(e => e.department.toLowerCase() === department.toLowerCase());
+export function deleteBranch(id: string): boolean {
+  const before = branches.length;
+  branches = branches.filter(b => b.id !== id);
+  return branches.length < before;
 }
