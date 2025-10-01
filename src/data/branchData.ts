@@ -18,4 +18,5 @@ const branches: Branch[] = [
     { id: "10", name: "Headingley Branch", address: "500 McIntosh Rd, Headingley, MB, R4H 1B6", phone: "204-999-5555" }
 ];
 
+
 export default branches;
