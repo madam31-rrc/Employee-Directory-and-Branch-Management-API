@@ -1,5 +1,5 @@
 import branches, { Branch } from "../data/branchData"
-import branchs from "../data/branchData"
+import branchs from "../../../data/branchData"
 
 export const createBranch = async (branch: {
     name: string,
