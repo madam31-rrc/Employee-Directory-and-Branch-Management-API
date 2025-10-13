@@ -1,13 +1,35 @@
-// src/api/v1/routes/branchRoutes.ts
-import express, { Router } from "express";
-import * as branchController from "../controllers/branchController";
+import { Router } from "express";
+import Joi from "joi";
+import * as branchCtrl from "../controllers/branchController";
+import { validate } from "../middleware/validate";
+import {
+  createBranchSchema,
+  updateBranchSchema,
+  idParamSchema as branchIdParamSchemaImported,
+} from "../validation/branchSchema";
 
-const router: Router = express.Router();
+const router = Router();
 
-router.post("/", branchController.create);     // use 'create' (matches controller)
-router.get("/", branchController.getAll);
-router.get("/:id", branchController.getById);
-router.patch("/:id", branchController.update);
-router.delete("/:id", branchController.remove);
+const branchIdParamSchema = Joi.object({
+  id: Joi.alternatives(Joi.string().min(1), Joi.number().integer()).required().messages({
+    "any.required": "id is required",
+    "string.base": "id must be a string or number",
+  }),
+});
+
+router.post("/", validate(createBranchSchema), branchCtrl.create);
+
+router.get("/", branchCtrl.getAll);
+
+router.get("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.getById);
+
+router.patch(
+  "/:id",
+  validate(branchIdParamSchemaImported || branchIdParamSchema, "params"),
+  validate(updateBranchSchema, "body"),
+  branchCtrl.update
+);
+
+router.delete("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.remove);
 
 export default router;
