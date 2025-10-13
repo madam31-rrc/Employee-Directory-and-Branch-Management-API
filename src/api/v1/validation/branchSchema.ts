@@ -25,3 +25,12 @@ export const updateBranchSchema = Joi.object({
 }).min(1).messages({
   "object.min": "At least one field must be provided to update",
 });
+
+export const idParamSchema = Joi.object({
+  id: Joi.alternatives().try(Joi.string().trim().min(1), 
+  Joi.number().integer()).required().messages({
+    "any.required": "id is required",
+    "string.base": "id must be a string",
+    "number.base": "id must be a number",
+  }),
+});
