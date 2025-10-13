@@ -1,5 +1,13 @@
 import Joi from "joi";
 
+export const idParamSchema = Joi.object({
+  id: Joi.alternatives(Joi.string().min(1), 
+  Joi.number().integer()).required().messages({
+    "any.required": "id is required",
+    "string.base": "id must be a string or number",
+  }),
+});
+
 export const createEmployeeSchema = Joi.object({
   name: Joi.string().min(1).required().messages({
     "string.base": "name must be a string",
@@ -26,10 +34,8 @@ export const createEmployeeSchema = Joi.object({
     "string.empty": "phone is required",
     "any.required": "phone is required",
   }),
-  branchId: Joi.alternatives(
-    Joi.string().min(1),
-    Joi.number().integer()
-  ).required().messages({
+  branchId: Joi.alternatives(Joi.string().min(1), 
+  Joi.number().integer()).required().messages({
     "any.required": "branchId is required",
   }),
 }).required();
@@ -41,6 +47,8 @@ export const updateEmployeeSchema = Joi.object({
   email: Joi.string().email(),
   phone: Joi.string().min(4),
   branchId: Joi.alternatives(Joi.string().min(1), Joi.number().integer()),
-}).min(1).messages({
-  "object.min": "At least one field must be provided to update",
-});
+})
+  .min(1)
+  .messages({
+    "object.min": "At least one field must be provided to update",
+  });
