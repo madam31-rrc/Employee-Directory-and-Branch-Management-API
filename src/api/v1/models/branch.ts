@@ -4,3 +4,9 @@ export interface Branch {
   address: string;
   phone: string;
 }
+
+export interface initialBranches {
+  name: string;
+  address: string;
+  phone: string;
+}
