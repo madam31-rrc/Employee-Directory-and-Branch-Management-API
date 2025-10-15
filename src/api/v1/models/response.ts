@@ -9,3 +9,5 @@ export type ErrorResponse = {
   error: string;
   code?: number;
 };
+
+export type Response<T> = SuccessResponse<T> | ErrorResponse;
