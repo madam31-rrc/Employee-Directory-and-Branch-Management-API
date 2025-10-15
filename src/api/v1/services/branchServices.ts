@@ -1,12 +1,13 @@
-import { Branch, initialBranches } from "../../../data/branchData";
+import { Branch } from "../models/branch";
+import { initialBranches } from "../../../data/branchData";
 
 let branches: Branch[] = [];
-export function resetBranches(): void {
+
+export function resetBranches() {
   branches = initialBranches.map(b => ({ ...b }));
 }
-
-
 resetBranches();
+
 export function getAllBranches(): Branch[] {
   return branches;
 }
@@ -17,20 +18,13 @@ export function getBranchById(id: string): Branch | undefined {
 
 function nextBranchId(): string {
   if (branches.length === 0) return "1";
-
-  const numericIds = branches
-    .map(b => Number(b.id))
-    .filter(n => Number.isFinite(n));
-
-  const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+  const numericIds = branches.map(b => Number(b.id)).filter(n => Number.isFinite(n));
+  const maxId = numericIds.length ? Math.max(...numericIds) : branches.length;
   return String(maxId + 1);
 }
 
 export function createBranch(payload: Omit<Branch, "id">): Branch {
-  const newBranch: Branch = {
-    id: nextBranchId(),
-    ...payload
-  };
+  const newBranch: Branch = { id: nextBranchId(), ...payload };
   branches.push(newBranch);
   return newBranch;
 }
@@ -46,4 +40,5 @@ export function deleteBranch(id: string): boolean {
   const before = branches.length;
   branches = branches.filter(b => b.id !== id);
   return branches.length < before;
+
 }
