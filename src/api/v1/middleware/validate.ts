@@ -1,28 +1,20 @@
-import { Request, Response, NextFunction } from "express";
-import { Schema } from "joi";
+// filename: src/api/v1/middleware/validate.ts
+import { NextFunction, Request, Response } from "express";
+import Joi from "joi";
 
-type ValidationSource = "body" | "params" | "query";
+type Location = "body" | "params" | "query";
 
-export function validate(schema: Schema, source: ValidationSource = "body") {
+export function validate(schema: Joi.Schema, location: Location = "body") {
   return (req: Request, res: Response, next: NextFunction) => {
-    const data =
-      source === "body" ? req.body : source === "params" ? req.params : req.query;
-
-    const { error, value } = schema.validate(data, {
-      abortEarly: false,
-      stripUnknown: true,
-      convert: true,
-    });
-
+    const value = (location === "body") ? req.body : (location === "params" ? req.params : req.query);
+    const { error, value: validated } = schema.validate(value, { abortEarly: false, stripUnknown: true });
     if (error) {
-      const message = error.details.map((d) => d.message).join(", ");
-      return res.status(400).json({ error: message });
+      return res.status(400).json({ error: error.details.map(d => d.message).join(", ") });
     }
-
-    if (source === "body") req.body = value as any;
-    else if (source === "params") req.params = value as any;
-    else req.query = value as any;
-
-    return next();
+    // assign back validated (strip unknown)
+    if (location === "body") req.body = validated;
+    if (location === "params") req.params = validated;
+    if (location === "query") req.query = validated as any;
+    next();
   };
 }
