@@ -17,19 +17,20 @@ const branchIdParamSchema = Joi.object({
   }),
 });
 
-router.post("/", validate(createBranchSchema), branchCtrl.create);
+router.post("/", validate(createBranchSchema), branchCtrl.createBranch);
 
-router.get("/", branchCtrl.getAll);
+router.get("/", branchCtrl.getAllBranches);
 
-router.get("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.getById);
+router.get("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.getBranchById);
 
 router.patch(
   "/:id",
   validate(branchIdParamSchemaImported || branchIdParamSchema, "params"),
   validate(updateBranchSchema, "body"),
-  branchCtrl.update
+  branchCtrl.updateBranch
 );
 
-router.delete("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.remove);
+router.delete("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"),
+branchCtrl.deleteBranch);
 
 export default router;
