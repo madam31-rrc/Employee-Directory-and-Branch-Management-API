@@ -1,12 +1,11 @@
-// src/api/v1/services/employeeService.ts
-import { Employee, initialEmployees } from "../../../data/employeeData";
+import { Employee } from "../models/employee";
+import { initialEmployees } from "../../../data/employeeData";
 
 let employees: Employee[] = [];
 
-export function resetEmployees(): void {
-  employees = initialEmployees.map(emp => ({ ...emp }));
+export function resetEmployees() {
+  employees = initialEmployees.map(e => ({ ...e }));
 }
-
 resetEmployees();
 
 export function getAllEmployees(): Employee[] {
@@ -14,38 +13,27 @@ export function getAllEmployees(): Employee[] {
 }
 
 export function getEmployeeById(id: string): Employee | undefined {
-  return employees.find(emp => emp.id === id);
+  return employees.find(e => e.id === id);
 }
 
 function nextEmployeeId(): string {
   if (employees.length === 0) return "1";
-
-  const numericIds = employees
-    .map(e => Number(e.id))
-    .filter(n => Number.isFinite(n));
-
-  const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+  const numericIds = employees.map(e => Number(e.id)).filter(n => Number.isFinite(n));
+  const maxId = numericIds.length ? Math.max(...numericIds) : employees.length;
   return String(maxId + 1);
 }
 
 export function createEmployee(payload: Omit<Employee, "id">): Employee {
-  const newEmployee: Employee = {
-    id: nextEmployeeId(),
-    ...payload
-  };
+  const newEmployee: Employee = { id: nextEmployeeId(), ...payload };
   employees.push(newEmployee);
   return newEmployee;
 }
 
-export function updateEmployee(
-  id: string,
-  partial: Partial<Employee>
-): Employee | undefined {
-  const index = employees.findIndex(e => e.id === id);
-  if (index === -1) return undefined;
-
-  employees[index] = { ...employees[index], ...partial, id };
-  return employees[index];
+export function updateEmployee(id: string, partial: Partial<Employee>): Employee | undefined {
+  const idx = employees.findIndex(e => e.id === id);
+  if (idx === -1) return undefined;
+  employees[idx] = { ...employees[idx], ...partial, id };
+  return employees[idx];
 }
 
 export function deleteEmployee(id: string): boolean {
@@ -59,7 +47,5 @@ export function getEmployeesByBranch(branchId: string): Employee[] {
 }
 
 export function getEmployeesByDepartment(department: string): Employee[] {
-  return employees.filter(
-    e => e.department.toLowerCase() === department.toLowerCase()
-  );
+  return employees.filter(e => e.department === department);
 }
