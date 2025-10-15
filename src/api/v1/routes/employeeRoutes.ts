@@ -1,43 +1,41 @@
 import { Router } from "express";
 import Joi from "joi";
-import * as ctrl from "../controllers/employeeController";
+import * as branchCtrl from "../controllers/branchController";
 import { validate } from "../middleware/validate";
 import {
-  createEmployeeSchema,
-  updateEmployeeSchema,
-  idParamSchema as idParamSchemaImported,
-} from "../validation/employeeSchema";
+  createBranchSchema,
+  updateBranchSchema,
+  idParamSchema as branchIdParamSchemaImported,
+} from "../validation/branchSchema";
 
 const router = Router();
 
+// Inline if you want custom branch param schema (this is optional if you already have branchId exported)
 const branchIdParamSchema = Joi.object({
-  branchId: Joi.alternatives(Joi.string().min(1), Joi.number().integer()).required().messages({
-    "any.required": "branchId is required",
-    "string.base": "branchId must be a string or number",
+  id: Joi.alternatives(Joi.string().min(1), Joi.number().integer()).required().messages({
+    "any.required": "id is required",
+    "string.base": "id must be a string or number",
   }),
 });
 
-const departmentParamSchema = Joi.object({
-  department: Joi.string().min(1).required().messages({
-    "any.required": "department is required",
-    "string.base": "department must be a string",
-  }),
-});
+// Create (validate body)
+router.post("/", validate(createBranchSchema), branchCtrl.createBranch);
 
-router.post("/", validate(createEmployeeSchema), ctrl.create);
+// List
+router.get("/", branchCtrl.getAllBranches);
 
-router.get("/", ctrl.getAll);
+// Get by id (validate params)
+router.get("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.getBranchById);
 
-router.get("/branch/:branchId", validate(branchIdParamSchema, "params"), ctrl.byBranch);
-router.get("/department/:department", validate(departmentParamSchema, "params"), ctrl.byDepartment);
-
-router.get("/:id", validate(idParamSchemaImported, "params"), ctrl.getById);
+// Update (validate params then body)
 router.patch(
   "/:id",
-  validate(idParamSchemaImported, "params"),
-  validate(updateEmployeeSchema, "body"),
-  ctrl.update
+  validate(branchIdParamSchemaImported || branchIdParamSchema, "params"),
+  validate(updateBranchSchema, "body"),
+  branchCtrl.updateBranch
 );
-router.delete("/:id", validate(idParamSchemaImported, "params"), ctrl.remove);
+
+// Delete
+router.delete("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.deleteBranch);
 
 export default router;
