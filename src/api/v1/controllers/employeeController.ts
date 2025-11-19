@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import * as svc from "../services/employeeService";
+import { Employee } from "../models/employee";
 
 export function createEmployee(req: Request, res: Response) {
-  const payload = req.body;
+  const payload = req.body as Omit<Employee, "id">;
   const created = svc.createEmployee(payload);
   return res.status(201).json(created);
 }
@@ -34,7 +35,7 @@ export function deleteEmployee(req: Request, res: Response) {
 
 export function getEmployeesByBranch(req: Request, res: Response) {
   const { branchId } = req.params;
-  return res.json(svc.getEmployeesByBranch(branchId));
+  return res.json(svc.getEmployeesByBranch(String(branchId)));
 }
 
 export function getEmployeesByDepartment(req: Request, res: Response) {
