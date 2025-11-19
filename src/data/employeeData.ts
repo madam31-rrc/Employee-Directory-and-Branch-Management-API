@@ -1,0 +1,42 @@
+import { Employee } from "../api/v1/models/employee";
+
+export const initialEmployees: Employee[] = [
+  { id: "1", name: "Alice Johnson", position: "Branch Manager", department: "Management", email: "alice.johnson@example.com", phone: "604-555-0148", branchId: "1" },
+  { id: "2", name: "Amandeep Singh", position: "Customer Service Rep", department: "Customer Service", email: "amandeep.singh@example.com", phone: "780-555-0150", branchId: "2" },
+  { id: "3", name: "Maria Garcia", position: "Loan Officer", department: "Loans", email: "maria.garcia@example.com", phone: "204-555-0193", branchId: "3" },
+  { id: "4", name: "James Wilson", position: "IT Support", department: "IT", email: "james.wilson@example.com", phone: "306-555-0111", branchId: "4" },
+  { id: "5", name: "Linda Martinez", position: "Financial Advisor", department: "Advising", email: "linda.martinez@example.com", phone: "204-555-0122", branchId: "5" },
+  { id: "6", name: "Michael Brown", position: "Teller", department: "Operations", email: "michael.brown@example.com", phone: "204-555-0133", branchId: "6" },
+  { id: "7", name: "Patricia Taylor", position: "Operations Manager", department: "Operations", email: "patricia.taylor@example.com", phone: "514-555-0144", branchId: "7" },
+  { id: "8", name: "Chen Wei", position: "Senior Loan Officer", department: "Loans", email: "chen.wei@example.com", phone: "416-555-0155", branchId: "8" },
+  { id: "9", name: "Charles Thomas", position: "Accountant", department: "Finance", email: "charles.thomas@example.com", phone: "506-555-0166", branchId: "9" },
+  { id: "10", name: "Maria Garcia 2", position: "Loan Assistant", department: "Loans", email: "maria.g2@example.com", phone: "204-555-0177", branchId: "3" },
+
+  { id: "11", name: "Ethan Walker", position: "Customer Service Rep", department: "Customer Service", email: "ethan.walker@example.com", phone: "204-555-0211", branchId: "1" },
+  { id: "12", name: "Olivia Harris", position: "Loan Assistant", department: "Loans", email: "olivia.harris@example.com", phone: "204-555-0222", branchId: "2" },
+  { id: "13", name: "Daniel Lee", position: "IT Technician", department: "IT", email: "daniel.lee@example.com", phone: "204-555-0233", branchId: "3" },
+  { id: "14", name: "Sophia Clark", position: "Branch Teller", department: "Operations", email: "sophia.clark@example.com", phone: "204-555-0244", branchId: "4" },
+  { id: "15", name: "Liam King", position: "Financial Planner", department: "Advisory", email: "liam.king@example.com", phone: "204-555-0255", branchId: "5" },
+  { id: "16", name: "Mia Scott", position: "Customer Service Rep", department: "Customer Service", email: "mia.scott@example.com", phone: "204-555-0266", branchId: "6" },
+  { id: "17", name: "Noah Green", position: "Compliance Officer", department: "Compliance", email: "noah.green@example.com", phone: "204-555-0277", branchId: "7" },
+  { id: "18", name: "Isabella Adams", position: "Loan Processor", department: "Loans", email: "isabella.adams@example.com", phone: "204-555-0288", branchId: "8" },
+  { id: "19", name: "Lucas Baker", position: "Accountant", department: "Finance", email: "lucas.baker@example.com", phone: "204-555-0299", branchId: "9" },
+  { id: "20", name: "Ava Nelson", position: "HR Specialist", department: "HR", email: "ava.nelson@example.com", phone: "204-555-0300", branchId: "10" },
+
+  { id: "21", name: "William Perez", position: "Senior Teller", department: "Operations", email: "william.perez@example.com", phone: "204-555-0311", branchId: "1" },
+  { id: "22", name: "Emma Ramirez", position: "Loan Officer", department: "Loans", email: "emma.ramirez@example.com", phone: "204-555-0322", branchId: "2" },
+  { id: "23", name: "James Foster", position: "Operations Lead", department: "Operations", email: "james.foster@example.com", phone: "204-555-0333", branchId: "3" },
+  { id: "24", name: "Charlotte Turner", position: "Customer Success", department: "Customer Service", email: "charlotte.turner@example.com", phone: "204-555-0344", branchId: "4" },
+  { id: "25", name: "Benjamin Rogers", position: "Investment Advisor", department: "Advisory", email: "benjamin.rogers@example.com", phone: "204-555-0355", branchId: "5" },
+  { id: "26", name: "Amelia Hill", position: "Branch Assistant", department: "Management", email: "amelia.hill@example.com", phone: "204-555-0366", branchId: "6" },
+  { id: "27", name: "Henry Ward", position: "Systems Analyst", department: "IT", email: "henry.ward@example.com", phone: "204-555-0377", branchId: "7" },
+  { id: "28", name: "Evelyn Cook", position: "Loan Specialist", department: "Loans", email: "evelyn.cook@example.com", phone: "204-555-0388", branchId: "8" },
+  { id: "29", name: "Alexander Bell", position: "Payroll Clerk", department: "Finance", email: "alexander.bell@example.com", phone: "204-555-0399", branchId: "9" },
+  { id: "30", name: "Harper Young", position: "Recruiter", department: "HR", email: "harper.young@example.com", phone: "204-555-0400", branchId: "10" },
+
+  { id: "31", name: "Sebastian Diaz", position: "Operations Specialist", department: "Operations", email: "sebastian.diaz@example.com", phone: "204-555-0411", branchId: "1" },
+  { id: "32", name: "Grace Kim", position: "Loan Processor", department: "Loans", email: "grace.kim@example.com", phone: "204-555-0422", branchId: "2" },
+  { id: "33", name: "Jack Morgan", position: "IT Lead", department: "IT", email: "jack.morgan@example.com", phone: "204-555-0433", branchId: "3" },
+  { id: "34", name: "Zoey Rivera", position: "Branch Teller", department: "Operations", email: "zoey.rivera@example.com", phone: "204-555-0444", branchId: "4" },
+  { id: "35", name: "Owen Brooks", position: "Customer Service Rep", department: "Customer Service", email: "owen.brooks@example.com", phone: "204-555-0455", branchId: "5" },
+];
