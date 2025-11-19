@@ -1,3 +1,4 @@
+// src/api/v1/models/employee.ts
 export interface Employee {
   id: string;
   name: string;
