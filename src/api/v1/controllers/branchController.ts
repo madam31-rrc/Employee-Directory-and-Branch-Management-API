@@ -1,12 +1,25 @@
-// src/api/v1/controllers/branchController.ts
 import { Request, Response } from "express";
-import * as svc from "../services/branchService";
+import * as svc from "../services/branchServices";
 import { Branch } from "../models/branch";
 
 export function createBranch(req: Request, res: Response) {
-  const payload: Partial<Branch> = req.body;
+  const { name, address, phone } = req.body ?? {};
+
+  // Runtime validation (Joi should normally run before this; this is a safety net)
+  if (typeof name !== "string" || name.trim() === "" ||
+      typeof address !== "string" || address.trim() === "" ||
+      typeof phone !== "string" || phone.trim() === "") {
+    return res.status(400).json({ error: "Missing required fields: name, address, phone" });
+  }
+
+  // Build the exact type the service expects: Omit<Branch, 'id'>
+  const payload: Omit<Branch, "id"> = {
+    name: name.trim(),
+    address: address.trim(),
+    phone: phone.trim(),
+  };
+
   const created = svc.createBranch(payload);
-  // return created branch directly (tests expect body.id etc.)
   return res.status(201).json(created);
 }
 
