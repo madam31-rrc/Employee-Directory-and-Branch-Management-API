@@ -1,41 +1,25 @@
 import { Router } from "express";
-import Joi from "joi";
-import * as branchCtrl from "../controllers/branchController";
+import * as ctrl from "../controllers/employeeController";
 import { validate } from "../middleware/validate";
 import {
-  createBranchSchema,
-  updateBranchSchema,
-  idParamSchema as branchIdParamSchemaImported,
-} from "../validation/branchSchema";
+  createEmployeeSchema,
+  updateEmployeeSchema,
+  idParamSchema,
+  branchIdParamSchema,
+  departmentParamSchema,
+} from "../validation/employeeSchema";
 
 const router = Router();
 
-// Inline if you want custom branch param schema (this is optional if you already have branchId exported)
-const branchIdParamSchema = Joi.object({
-  id: Joi.alternatives(Joi.string().min(1), Joi.number().integer()).required().messages({
-    "any.required": "id is required",
-    "string.base": "id must be a string or number",
-  }),
-});
+router.post("/", validate(createEmployeeSchema, "body"), ctrl.createEmployee);
 
-// Create (validate body)
-router.post("/", validate(createBranchSchema), branchCtrl.createBranch);
+router.get("/", ctrl.getAllEmployees);
 
-// List
-router.get("/", branchCtrl.getAllBranches);
+router.get("/branch/:branchId", validate(branchIdParamSchema, "params"), ctrl.getEmployeesByBranch);
+router.get("/department/:department", validate(departmentParamSchema, "params"), ctrl.getEmployeesByDepartment);
 
-// Get by id (validate params)
-router.get("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.getBranchById);
-
-// Update (validate params then body)
-router.patch(
-  "/:id",
-  validate(branchIdParamSchemaImported || branchIdParamSchema, "params"),
-  validate(updateBranchSchema, "body"),
-  branchCtrl.updateBranch
-);
-
-// Delete
-router.delete("/:id", validate(branchIdParamSchemaImported || branchIdParamSchema, "params"), branchCtrl.deleteBranch);
+router.get("/:id", validate(idParamSchema, "params"), ctrl.getEmployeeById);
+router.patch("/:id", validate(idParamSchema, "params"), validate(updateEmployeeSchema, "body"), ctrl.updateEmployee);
+router.delete("/:id", validate(idParamSchema, "params"), ctrl.deleteEmployee);
 
 export default router;
