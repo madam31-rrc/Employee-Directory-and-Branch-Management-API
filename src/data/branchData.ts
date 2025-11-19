@@ -1,4 +1,3 @@
-// filename: src/data/branchData.ts
 import { Branch } from "../api/v1/models/branch";
 
 export const initialBranches: Branch[] = [
