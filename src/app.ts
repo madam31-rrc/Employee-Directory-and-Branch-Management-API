@@ -1,25 +1,25 @@
 import express from "express";
 import morgan from "morgan";
+import { getHelmetMiddleware } from "./config/helmetConfig";
+import cors from "cors";
+import { getCorsOptions } from "./config/corsConfig";
 import employeeRoutes from "./api/v1/routes/employeeRoutes";
 import branchRoutes from "./api/v1/routes/branchRoutes";
+import setupSwagger from "./config/swagger";
+import bodyParser from "body-parser";
 
 const app = express();
 
-app.use(express.json());
 app.use(morgan("combined"));
+app.use(bodyParser.json());
+app.use(getHelmetMiddleware());
+app.use(cors(getCorsOptions()));
 
-// health
 app.get("/health", (_req, res) => res.status(200).send("Server is healthy"));
 
-// API
 app.use("/api/v1/employees", employeeRoutes);
 app.use("/api/v1/branches", branchRoutes);
 
-// error handler
-app.use((err: any, _req: express.Request, res: express.Response, _next: any) => {
-  console.error(err);
-  const status = err?.status || 500;
-  res.status(status).json({ error: err?.message ?? "Internal server error" });
-});
+setupSwagger(app);
 
 export default app;
